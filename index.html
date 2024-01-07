@@ -1,21 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi CV</title>
-    <style>
-        body {
-            margin: 0px;
-        }
-        #cv {
-            width: 100%;
-            max-height: max-content;
-            justify-content: center;
-        }
-    </style>
-</head>
+<html lang="es">
 <body>
-    <iframe id="cv" src="CVManuelMaratratPons.pdf" frameborder="0"></iframe>
+ <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+<div id="pdf-viewer"></div>
+<script>
+   // Cargar PDF.js y mostrar el PDF
+   var pdfUrl = 'CVManuelMaratratPons.pdf';
+   pdfjsLib.getDocument(pdfUrl).then(function(pdfDoc) {
+      for (var pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+         pdfDoc.getPage(pageNum).then(function(page) {
+            var scale = 1.5;
+            var viewport = page.getViewport({ scale: scale });
+
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            var renderContext = {
+               canvasContext: context,
+               viewport: viewport
+            };
+            document.getElementById('pdf-viewer').appendChild(canvas);
+
+            page.render(renderContext);
+         });
+      }
+   });
+</script>
+
 </body>
 </html>
